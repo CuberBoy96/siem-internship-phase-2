@@ -19,7 +19,7 @@ In this Phase, we will simulate and detect post-compromise activities that a rea
 
 * **Host Machine**: Running Splunk Web Interface
 * **Windows 10 VM**: Target machine with Sysmon, Event Logs, and Splunk Universal Forwarder
-* **Kali Linux VM**: Used for attack simulation using tools like `hydra` and `crackmapexec`
+* **Kali Linux VM**: Used for attack simulation using tools like `PSExec` and `powershell.exe`
 
 Logs from the Windows VM are shipped to the host Splunk instance using Splunk Universal Forwarder.
 
