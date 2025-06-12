@@ -64,15 +64,15 @@ Logs from the Windows VM are shipped to the host Splunk instance using Splunk Un
 ## 🗃️ Folder Structure
 
 ```
-siem-internship-phase-1/
-├── use-case-1-brute-force-login/
-│   ├── screenshots/
+siem-internship-phase-2/
+├── use-case-1-privilege-escalation-attempt/
 │   ├── detection-logic/
+│   ├── screenshots/
 │   └── writeups/
-├── use-case-2-suspicious-logon-time/
-├── use-case-3-lateral-movement-rdp/
-├── use-case-4-log-tampering/
-├── use-case-5-hidden-user/
+├── use-case-2-lateral-movement/
+├── use-case-3-suspicious-file-downlaod-&-execution/
+├── use-case-4-adnormal-user-behavior/
+├── use-case-5-C2-beaconing-behavior/
 └── README.md
 ```
 
