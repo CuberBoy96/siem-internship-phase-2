@@ -1,4 +1,4 @@
-# 🔍 SIEM Detection Lab — SOC Use Case Simulation Project
+# 🔍 SIEM Detection Lab — siem-internship-phase-2
 
 ![Platform](https://img.shields.io/badge/Platform-Windows-blue)
 ![Platform](https://img.shields.io/badge/Platform-Linux-darkgreen)
