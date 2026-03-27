@@ -284,14 +284,14 @@ Verify:
 
 ---
 
-## 📊 Expected Logs
+## 📊 Expected Logs 
 
 You should observe:
 
-EventCode=4625 → Failed Login  
-EventCode=4624 → Successful Login  
-EventCode=4688 → Process Created  
-Sysmon Event 1 → Process Execution  
+- EventCode=4625 → Failed Login  
+- EventCode=4624 → Successful Login  
+- EventCode=4688 → Process Created  
+- Sysmon Event 1 → Process Execution  
 
 ---
 
@@ -307,5 +307,5 @@ After completing this use case:
 
 This demonstrates real-world lateral movement detection capability in a SOC environment.
 
-
 ---
+
