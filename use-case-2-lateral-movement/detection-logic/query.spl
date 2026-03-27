@@ -1,34 +1,22 @@
 
-index=* 
-
-(EventCode=4625 OR 
- EventCode=4624 OR 
- EventCode=4688)
-
-| eval Activity=case(
-
+index=* (EventCode=4625 OR EventCode=4624 OR EventCode=4688)
+| eval Activity=case
+(
 EventCode==4625,
 "Failed Login Attempt",
-
 EventCode==4624 AND LogonType=3,
 "Successful Remote Login",
-
 EventCode==4688 AND like(Creator_Process_Name,"%wmiprvse.exe%"),
 "Remote Command Execution (WMI)",
-
 EventCode==4688 AND like(New_Process_Name,"%powershell.exe%"),
 "Remote PowerShell Execution"
-
 )
-
 | stats count
 values(Activity) as Detected_Activities
 values(Account_Name) as Users
 values(Source_Network_Address) as Source_IP
 values(New_Process_Name) as Processes
 values(CommandLine) as Commands
-
 by _time
-
 | sort -_time
 
