@@ -101,7 +101,51 @@ Regular timing indicates beaconing behavior.
 
 ---
 
-# 🧠 MITRE ATT&CK Mapping
+## 🔎 Splunk Detection Queries
+
+Detect Repeated Connections to Same Destination
+```spl
+index=* EventCode=5156
+| stats count by Source_Address Destination_Address Destination_Port
+| where count > 10
+
+```
+
+Detect Frequent Sysmon Network Connections
+```spl
+index=* EventCode=3
+| stats count by DestinationIp DestinationPort
+| where count > 10
+
+```
+
+Detect Periodic Beaconing Pattern
+```spl
+index=* EventCode=3
+| bin _time span=10s
+| stats count by _time DestinationIp
+| where count > 1
+
+```
+
+---
+
+## 📊 Detection Logic Explanation
+
+This detection identifies:
+
+- Multiple outbound connections
+- Same destination IP
+- Same destination port
+- Repeated timing intervals
+
+Combined behavior indicates:
+
+🚨 C2 Beaconing Activity
+
+---
+
+## 🧠 MITRE ATT&CK Mapping
 
 |Category	|Mapping  |
 |---------|---------|
@@ -109,20 +153,23 @@ Regular timing indicates beaconing behavior.
 |🧪 Technique	| T1071 — Application Layer Protocol  |
 |🧪 Technique	| T1041 — Exfiltration Over C2 Channel  |
 
-⚠️ False Positives
+---
+
+## ⚠️ False Positives
 
 Possible legitimate causes:
 
-Monitoring tools
-Backup software
-System health check tools
-Software update services
+- Monitoring tools
+- Backup software
+- System health check tools
+- Software update services
 
 Validation Steps:
 
-Verify destination IP reputation
-Check application generating traffic
-Analyze connection frequency
+- Verify destination IP reputation
+- Check application generating traffic
+- Analyze connection frequency
+
 🚨 Alert Severity
 
 CRITICAL
@@ -131,18 +178,24 @@ Reason:
 
 Beaconing behavior strongly indicates malware communication with attacker infrastructure.
 
-🔍 Investigation Playbook
+---
+
+## 🔍 Investigation Playbook
 
 SOC Analyst should:
 
-Identify infected host
-Identify destination IP
-Check threat intelligence reputation
-Isolate infected system
-Capture memory and logs
-Remove malicious software
-Monitor for reinfection
-📁 Folder Structure
+- Identify infected host
+- Identify destination IP
+- Check threat intelligence reputation
+- Isolate infected system
+- Capture memory and logs
+- Remove malicious software
+- Monitor for reinfection
+
+---
+
+## 📁 Folder Structure
+```
 use-case-5-c2-beaconing-behavior/
 │
 ├── screenshots/
@@ -159,54 +212,52 @@ use-case-5-c2-beaconing-behavior/
 │   └── c2-beacon-analysis.md
 │
 └── README.md
-📸 Screenshot Checklist
+
+```
+
+---
+
+## 📸 Screenshot Checklist
 
 Capture:
 
-✅ Netcat listener running
-✅ Beacon script execution
-✅ Repeated network connections
-✅ Sysmon logs
-✅ Splunk query results
-✅ Alert triggered
+- ✅ Netcat listener running
+- ✅ Beacon script execution
+- ✅ Repeated network connections
+- ✅ Sysmon logs
+- ✅ Splunk query results
+- ✅ Alert triggered
 
-🧾 Detection Logic File
+---
 
-Create:
-
-detection-logic/c2_beacon_detection.spl
-
-Add:
-
-index=* EventCode=3
-| stats count by DestinationIp DestinationPort
-| where count > 10
-🧪 Testing Validation
-
-Verify:
-
-Netcat listener receives connections
-Windows sends repeated connections
-Logs appear in Splunk
-Query detects repeated traffic
-Alert triggers successfully
-📊 Expected Logs
+## 📊 Expected Logs
 
 You should observe:
 
-EventCode=5156 → Network Connection Allowed  
-Sysmon Event 3 → Network Connection  
-Repeated destination IP logs  
-🏁 Final Outcome
+- EventCode=5156 → Network Connection Allowed  
+- Sysmon Event 3 → Network Connection  
+- Repeated destination IP logs  
+
+---
+
+## 🏁 Final Outcome
 
 After completing:
 
-✅ Beacon simulation executed
-✅ Repeated connections logged
-✅ Logs forwarded to Splunk
-✅ Detection created
-✅ Alert triggered
+- ✅ Beacon simulation executed
+- ✅ Repeated connections logged
+- ✅ Logs forwarded to Splunk
+- ✅ Detection created
+- ✅ Alert triggered
 
+---
 This demonstrates Command-and-Control detection capability — a critical SOC skill.
+
+---
+
+
+**2026**
+
+---
 
 
