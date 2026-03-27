@@ -1,1 +1,17 @@
 
+index=* 
+(EventCode=4720 OR EventCode=4732 OR EventCode=4672 OR EventCode=4688)
+
+| eval Activity=case(
+EventCode==4720,"User Created",
+EventCode==4732,"Added to Admin Group",
+EventCode==4672,"Admin Privileges Assigned",
+EventCode==4688 AND like(New_Process_Name,"%powershell.exe%"),
+"PowerShell Execution",
+EventCode==4688 AND like(Creator_Process_Name,"%wmiprvse.exe%"),
+"Remote Execution"
+)
+
+| stats values(Activity) as Activities
+by SubjectUserName
+
