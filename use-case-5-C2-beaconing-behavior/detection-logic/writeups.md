@@ -50,9 +50,9 @@ by _time
 
 This covers your complete hidden user persistence scenario.
 
-- 	New user created	Event 4720
+- New user created	Event 4720
 - Added to admin group	Event 4732
-- 	Admin privileges assigned	Event 4672
+- Admin privileges assigned	Event 4672
   
 ---
 
@@ -129,71 +129,52 @@ This detects real privilege persistence chains.
 ## 🚨 Best Alert Query for Use Case 5
 
 Use this to create Splunk Alert.
-
-index=* 
-(EventCode=4720 OR EventCode=4732)
-
+```spl
+index=* (EventCode=4720 OR EventCode=4732)
 | stats count
 values(EventCode) as Events
 by TargetUserName
-
 | where count >= 2
-📊 Expected Output Example
-_time                Detected_Activities
----------------------------------------------------------
-16:12:01            User Account Created
-16:12:05            User Added to Administrators Group
-16:12:08            Administrative Privileges Assigned
-📌 Save This in Your GitHub
 
-Inside:
+```
 
-use-case-5-hidden-user-account/
+---
 
-Create:
+## 📊 Expected Output Example
+|time                |Detected_Activities                |
+|--------------------|-----------------------------------|
+|16:12:01            |User Account Created               |
+|16:12:05            |User Added to Administrators Group |
+|16:12:08            |Administrative Privileges Assigned |
 
-detection-logic/usecase5_master_detection.spl
+---
 
-Paste:
-
-index=* 
-(EventCode=4720 OR EventCode=4732 OR EventCode=4672)
-
-| eval Activity=case(
-EventCode==4720,"User Created",
-EventCode==4732,"Added to Admin Group",
-EventCode==4672,"Admin Privileges Assigned"
-)
-
-| stats values(Activity) as Activities
-by TargetUserName
-
-This makes your repo look professional and SOC-ready.
-
-🧠 Why This Use Case Matters
+## 🧠 Why This Use Case Matters
 
 Attackers create hidden backdoor accounts to maintain long-term access.
 
 Typical attacker flow:
-
+```
 Gain Access → Create Hidden User → Add Admin Rights → Maintain Persistence
 
+```
 This detection stops that persistence.
 
-🔥 Real SOC Tip
+---
+
+##🔥 Real SOC Tip
 
 If you detect:
-
+```
 User Created
 +
 Added to Admin Group
 
-Treat it as:
+```
+---
 
 🚨 CRITICAL — BACKDOOR ACCOUNT CREATED
 
 Because normal users rarely create admin accounts.
 
-🎯 Now You Have All 5 Master Queries
-
-You now have:
+---
