@@ -215,15 +215,15 @@ SOC Analyst should:
 # 📁 Folder Structure
     use-case-1-privilege-escalation-attempt/
     │
+    ├── detection-logic/
+    │   └── privilege_escalation_detection.spl
+    │
     ├── screenshots/
     │   ├── wmiexec-session.png
     │   ├── powershell-execution.png
     │   ├── account-created.png
     │   ├── splunk-query-result.png
     │   └── alert-triggered.png
-    │
-    ├── detection-logic/
-    │   └── privilege_escalation_detection.spl
     │
     └── README.md
 
