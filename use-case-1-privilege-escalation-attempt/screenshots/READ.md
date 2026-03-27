@@ -45,8 +45,174 @@ From Kali:
 wmiexec.py username:password@192.168.1.10
 
 ```
+## Step 2 — Launch Command Prompt
+
+Inside remote session:
+
+```cmd
+cmd.exe
+
+```
+Step 3 — Execute Powershell
+
+This generates PowerShell execution logs.
+
+```cmd
+powershell.exe
+
+```
+## Step 4 — Create New User Account
+
+This creates a new user.
+
+```cmd
+net user ironman p@ssw0rd /add
+
+```
+### Step 5 — Add user to Administrators Group
+
+This assigns administrative privileges. & This simulates Priviledge Escalation.
+
+```cmd
+net localgroup administrators ironman /add
+
+```
 ---
-## Folder Structure
+
+## 🖥️ Victim Behavior (Windows Logs)
+
+| Source       | Event ID / Field | Description                |
+| ------------ | ---------------- | -------------------------- |
+| Windows Logs | 4688             | Process created       |
+| Windows Logs | 4720             | User Created    |
+| Windows Logs | 4732             | User Added to Administrators group  |
+| Windows Logs | 4672             | Special Privileges Assigned |
+| Sysmon       | Event ID 1       | Process Execution |
+
+---
+
+## Parent-child process example:
+
+```
+wmiprvse.exe → cmd.exe  
+cmd.exe → powershell.exe  
+powershell.exe → net.exe  
+
+```
+This strongly indicates remote privilege escalation behavior.
+
+---
+
+## 🔎 Splunk Detection Queries
+
+Detect Remote Process Execution
+
+```spl
+index=* EventCode=4688
+Creator_Process_Name="*wmiprvse.exe"
+| table _time New_Process_Name Account_Name
+
+```
+
+Detect PowerShell Execution
+
+```spl
+index=* EventCode=4688
+New_Process_Name="*powershell.exe"
+| table _time Account_Name Creator_Process_Name
+
+```
+
+Detect User Account Creation
+
+```spl
+index=* EventCode=4720
+| table _time SubjectUserName TargetUserName
+
+```
+
+Detect Admin Group Assignment
+
+```spl
+index=* EventCode=4732
+TargetUserName="Administrators"
+| table _time MemberName SubjectUserName
+
+```
+
+Detect Privileged Token Assignment
+
+```spl
+index=* EventCode=4672
+| table _time Account_Name Privileges
+
+```
+
+## 📊 Detection Logic Explanation
+
+This detection identifies:
+
+- Remote execution using WMI
+- PowerShell execution
+- Creation of a new user
+- Addition to Administrators group
+
+When these activities occur together, it strongly indicates:
+
+🚨 Privilege Escalation Attempt
+
+---
+
+## 🧠 MITRE ATT&CK Mapping
+
+|Category	|Mapping    |
+|-----------|-----------|
+|🎯 Tactic	|Privilege Escalation    |
+|🧪 Technique	|T1068 — Exploitation for Privilege Escalation   |
+|🧪 Technique	|T1098 — Account Manipulation   |
+
+---
+
+## ⚠️ False Positives
+
+Possible legitimate causes:
+
+- IT administrators creating accounts
+- Software installation requiring admin access
+- Automated deployment scripts
+
+Validation Steps:
+
+- Verify administrator identity
+- Confirm authorized change request
+- Review maintenance schedules
+
+---
+
+## 🚨 Alert Severity
+
+CRITICAL
+
+Reason:
+
+Administrative privilege assignment is considered high-risk behavior.
+
+---
+
+## 🔍 Investigation Steps
+
+SOC Analyst should:
+
+- Identify newly created account
+- Verify legitimacy of user
+- Review command history
+- Identify source IP
+- Disable suspicious account
+- Reset affected credentials
+- Monitor for additional activity
+
+---
+# 📁 Folder Structure
     use-case-1-privilege-escalation-attempt/
     │
     ├── screenshots/
@@ -64,6 +230,53 @@ wmiexec.py username:password@192.168.1.10
     │
     └── README.md
 
+---
 
+## 📸 Screenshot Checklist
 
+Capture:
 
+- ✅ Remote command execution
+- ✅ PowerShell execution
+- ✅ User creation logs
+- ✅ Admin group assignment
+- ✅ Splunk detection output
+- ✅ Alert triggered
+
+---
+
+## 🧪 Testing Validation
+
+Verify:
+
+- User account created successfully
+- User added to Administrators group
+- Logs appear in Splunk
+- Detection query works
+- Alert triggers correctly
+
+---
+
+## 📊 Expected Logs
+
+You should observe:
+
+- EventCode=4688 → Process Created  
+- EventCode=4720 → User Created  
+- EventCode=4732 → Admin Group Assignment  
+- EventCode=4672 → Privilege Assignment  
+- Sysmon Event 1 → Process Execution  
+
+---
+
+## 🏁 Final Outcome
+
+After completing this use case:
+
+- ✅ Privilege escalation simulated
+- ✅ Windows logs generated
+- ✅ Logs forwarded to Splunk
+- ✅ Detection query created
+- ✅ Alert triggered successfully
+
+---
