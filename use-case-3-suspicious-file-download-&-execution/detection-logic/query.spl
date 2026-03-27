@@ -1,1 +1,29 @@
 
+index=* 
+(EventCode=4688 OR EventCode=3 OR EventCode=5156)
+
+| eval Activity=case(
+
+EventCode==4688 AND like(New_Process_Name,"%powershell.exe%"),
+"PowerShell Execution",
+
+EventCode==4688 AND like(CommandLine,"%Invoke-WebRequest%"),
+"Malware Download Attempt",
+
+EventCode==4688 AND like(New_Process_Name,"%.exe%"),
+"Suspicious Executable Run",
+
+EventCode==3,
+"External Network Connection"
+
+)
+
+| stats values(Activity) as Activities
+values(Account_Name) as Users
+values(DestinationIp) as Destination_IP
+values(CommandLine) as Commands
+
+by Account_Name
+
+| where mvcount(Activities) >= 2
+
