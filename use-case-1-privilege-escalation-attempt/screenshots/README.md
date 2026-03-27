@@ -47,15 +47,11 @@ wmiexec.py username:password@192.168.1.10
 ```
 ## Step 2 — Launch Command Prompt
 
-Inside remote session:
-
 ```cmd
 cmd.exe
 
 ```
 Step 3 — Execute Powershell
-
-This generates PowerShell execution logs.
 
 ```cmd
 powershell.exe
@@ -63,20 +59,17 @@ powershell.exe
 ```
 ## Step 4 — Create New User Account
 
-This creates a new user.
-
 ```cmd
 net user ironman p@ssw0rd /add
 
 ```
 ### Step 5 — Add user to Administrators Group
 
-This assigns administrative privileges. & This simulates Priviledge Escalation.
-
 ```cmd
 net localgroup administrators ironman /add
 
 ```
+
 ---
 
 ## 🖥️ Victim Behavior (Windows Logs)
@@ -212,7 +205,7 @@ SOC Analyst should:
 - Monitor for additional activity
 
 ---
-# 📁 Folder Structure
+## 📁 Folder Structure
     use-case-1-privilege-escalation-attempt/
     │
     ├── detection-logic/
