@@ -43,3 +43,27 @@ From Kali:
 
 ```bash
 wmiexec.py username:password@192.168.1.10
+
+```
+---
+## Folder Structure
+    use-case-1-privilege-escalation-attempt/
+    │
+    ├── screenshots/
+    │   ├── wmiexec-session.png
+    │   ├── powershell-execution.png
+    │   ├── account-created.png
+    │   ├── splunk-query-result.png
+    │   └── alert-triggered.png
+    │
+    ├── detection-logic/
+    │   └── privilege_escalation_detection.spl
+    │
+    ├── writeups/
+    │   └── privilege-escalation-analysis.md
+    │
+    └── README.md
+
+
+
+
