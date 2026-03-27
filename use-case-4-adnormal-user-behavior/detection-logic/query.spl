@@ -1,1 +1,28 @@
 
+index=* 
+
+(EventCode=4688 OR EventCode=1102)
+
+| eval Activity=case(
+
+EventCode==4688 AND like(New_Process_Name,"%wevtutil.exe%"),
+"Log Utility Execution (wevtutil)",
+
+EventCode==4688 AND like(CommandLine,"%cl%"),
+"Event Log Clearing Command Detected",
+
+EventCode==1102,
+"Security Log Cleared"
+
+)
+
+| stats count
+values(Activity) as Detected_Activities
+values(Account_Name) as Users
+values(CommandLine) as Commands
+values(New_Process_Name) as Processes
+
+by _time
+
+| sort -_time
+
