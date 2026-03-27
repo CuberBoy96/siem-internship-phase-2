@@ -192,7 +192,8 @@ SOC Analyst should:
 use-case-3-suspicious-file-download-execution/
 │
 ├── detection-logic/
-│   └── suspicious_download_detection.spl
+│  └── suspicious_download_detection.spl
+|
 ├── screenshots/
 │   ├── kali-http-server.png
 │   ├── windows-download.png
@@ -252,5 +253,10 @@ After completing:
 - ✅ Logs collected
 - ✅ Detection created
 - ✅ Alert triggered
+
+---
+# 📅 Year
+
+**2026**
 
 ---
