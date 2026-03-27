@@ -52,7 +52,7 @@ This simulates unauthorized access using valid credentials.
 
 ---
 
-Step 2 — Perform Basic Activity
+## Step 2 — Perform Basic Activity
 
 After login:
 
