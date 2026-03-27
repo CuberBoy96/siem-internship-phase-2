@@ -305,7 +305,10 @@ After completing this use case:
 - ✅ Detection query created
 - ✅ Alert triggered successfully
 
-This demonstrates real-world lateral movement detection capability in a SOC environment.
 
 ---
+# 📅 Year
 
+**2026**
+
+---
