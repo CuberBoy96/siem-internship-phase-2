@@ -254,22 +254,6 @@ Capture the following:
 
 ---
 
-## 🧾 Detection Logic File
-
-Create file:
-
-detection-logic/lateral_movement_detection.spl
-
-Add:
-
-```spl
-index=* (EventCode=4624 OR EventCode=4625 OR EventCode=4688)
-| table _time EventCode Account_Name Source_Network_Address New_Process_Name
-
-```
-
----
-
 ## 🧪 Testing Validation
 
 Verify:
