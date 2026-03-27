@@ -80,64 +80,89 @@ This simulates malware execution.
 
 ## 🖥️ Victim Behavior (Windows Logs)
 
-|Event ID	|Description |
-|---------|------------|
-|4688	| Process Created |
-|5156	| Network Connection Allowed |
-|Event 1	| Process Execution |
-|Event 3	| Network Connection |
+|Source |Event ID	|Description |
+|-------|---------|------------|
+|Windows|4688	| Process Created |
+|Windows|5156	| Network Connection Allowed |
+|Sysmon |Event 1	| Process Execution |
+|Sysmon |Event 3	| Network Connection |
 
-Parent-Child Process Chain
+---
+
+## Parent-Child Process Chain
 
 Expected process chain:
-
+```
 powershell.exe → payload.exe
 
+```
 This indicates downloaded file execution.
 
-🔎 Splunk Detection Queries
+---
+
+## 🔎 Splunk Detection Queries
+
 Detect PowerShell Download Activity
+```spl
 index=* EventCode=4688
 New_Process_Name="*powershell.exe"
 CommandLine="*Invoke-WebRequest*"
 | table _time Account_Name CommandLine
+
+```
 Detect File Execution from Public Folder
+```spl
 index=* EventCode=4688
 New_Process_Name="*payload.exe"
 | table _time Account_Name New_Process_Name
+
+```
 Detect External Network Connection
+```spl
 index=* EventCode=5156
 | stats count by Source_Address Destination_Address
-📊 Detection Logic Explanation
+
+```
+---
+
+## 📊 Detection Logic Explanation
 
 This detection identifies:
 
-PowerShell downloading files
-Execution of downloaded file
-Network communication to external host
+- PowerShell downloading files
+- Execution of downloaded file
+- Network communication to external host
 
 Combined behavior indicates:
 
-🚨 Malware Download & Execution
+- 🚨 Malware Download & Execution
 
-🧠 MITRE ATT&CK Mapping
-Category	Mapping
-🎯 Tactic	Execution
-🧪 Technique	T1105 — Ingress Tool Transfer
-🧪 Technique	T1204 — User Execution
-⚠️ False Positives
+---
+
+## 🧠 MITRE ATT&CK Mapping
+
+|Category	|Mapping |
+|---------|--------|
+|🎯 Tactic	|Execution |
+|🧪 Technique |	T1105 — Ingress Tool Transfer |
+|🧪 Technique	 | T1204 — User Execution |
+
+---
+
+## ⚠️ False Positives
 
 Possible legitimate causes:
 
-Software installation downloads
-Patch management tools
-Administrative file transfers
+- Software installation downloads
+- Patch management tools
+- Administrative file transfers
 
 Validation required:
 
-Verify file source
-Check digital signature
-Confirm administrator activity
+- Verify file source
+- Check digital signature
+- Confirm administrator activity
+
 🚨 Alert Severity
 
 HIGH
@@ -146,18 +171,24 @@ Reason:
 
 Downloaded executables can lead to system compromise.
 
-🔍 Investigation Playbook
+---
+
+## 🔍 Investigation Playbook
 
 SOC Analyst should:
 
-Identify downloaded file
-Check file hash
-Identify download source IP
-Analyze execution path
-Quarantine suspicious file
-Scan system for malware
-Monitor system activity
-📁 Folder Structure
+- Identify downloaded file
+- Check file hash
+- Identify download source IP
+- Analyze execution path
+- Quarantine suspicious file
+- Scan system for malware
+- Monitor system activity
+
+---
+
+## 📁 Folder Structure
+```
 use-case-3-suspicious-file-download-execution/
 │
 ├── detection-logic/
@@ -170,52 +201,56 @@ use-case-3-suspicious-file-download-execution/
 │   └── alert-triggered.png
 │
 └── README.md
-📸 Screenshot Checklist
+
+```
+
+---
+
+## 📸 Screenshot Checklist
 
 Capture:
 
-✅ HTTP server running
-✅ File download command
-✅ File execution
-✅ PowerShell logs
-✅ Splunk query results
-✅ Alert triggered
+- ✅ HTTP server running
+- ✅ File download command
+- ✅ File execution
+- ✅ PowerShell logs
+- ✅ Splunk query results
+- ✅ Alert triggered
 
-🧾 Detection Logic File
+---
 
-Create:
-
-detection-logic/suspicious_download_detection.spl
-
-Add:
-
-index=* (EventCode=4688 OR EventCode=5156)
-| table _time EventCode Account_Name New_Process_Name Destination_Address
-🧪 Testing Validation
+## 🧪 Testing Validation
 
 Verify:
 
-File download occurs
-File executes
-Logs appear in Splunk
-Query detects events
-Alert triggers
-📊 Expected Logs
+- File download occurs
+- File executes
+- Logs appear in Splunk
+- Query detects events
+- Alert triggers
+
+---
+
+## 📊 Expected Logs
 
 You should see:
 
-EventCode=4688 → PowerShell Execution  
-EventCode=4688 → Payload Execution  
-EventCode=5156 → Network Connection  
-Sysmon Event 1 → Process Execution  
-Sysmon Event 3 → Network Connection  
-🏁 Final Outcome
+- EventCode=4688 → PowerShell Execution  
+- EventCode=4688 → Payload Execution  
+- EventCode=5156 → Network Connection  
+- Sysmon Event 1 → Process Execution  
+- Sysmon Event 3 → Network Connection  
+
+---
+
+## 🏁 Final Outcome
 
 After completing:
 
-✅ File downloaded
-✅ Payload executed
-✅ Logs collected
-✅ Detection created
-✅ Alert triggered
+- ✅ File downloaded
+- ✅ Payload executed
+- ✅ Logs collected
+- ✅ Detection created
+- ✅ Alert triggered
 
+---
