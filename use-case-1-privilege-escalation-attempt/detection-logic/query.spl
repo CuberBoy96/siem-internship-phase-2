@@ -1,30 +1,18 @@
 
-index=* 
-
-(EventCode=4688 OR 
- EventCode=4720 OR 
- EventCode=4732 OR 
- EventCode=4672)
-
-| eval Activity=case(
-
+index=* (EventCode=4688 OR EventCode=4720 OR EventCode=4732 OR EventCode=4672)
+| eval Activity=case
+(
 EventCode==4688 AND like(Creator_Process_Name,"%wmiprvse.exe%"),
 "Remote Command Execution (WMI)",
-
 EventCode==4688 AND like(New_Process_Name,"%powershell.exe%"),
 "PowerShell Execution",
-
 EventCode==4720,
 "User Account Created",
-
 EventCode==4732,
 "User Added to Administrators",
-
 EventCode==4672,
 "Privileged Token Assigned"
-
 )
-
 | stats count 
 values(Activity) as Detected_Activities
 values(Account_Name) as Users
@@ -32,8 +20,6 @@ values(SubjectUserName) as Performed_By
 values(TargetUserName) as Target_Account
 values(New_Process_Name) as Processes
 values(CommandLine) as Commands
-
 by _time
-
 | sort -_time
 
