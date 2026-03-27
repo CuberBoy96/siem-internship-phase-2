@@ -255,6 +255,7 @@ This demonstrates Command-and-Control detection capability — a critical SOC sk
 
 ---
 
+# :calendar: Year
 
 **2026**
 
