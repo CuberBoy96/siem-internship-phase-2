@@ -49,7 +49,7 @@ This simulates a malicious file.
 
 ---
 
-Step 2 — Start HTTP Server
+## Step 2 — Start HTTP Server
 ```bash
 python3 -m http.server 8000
 
@@ -58,7 +58,7 @@ This hosts the payload file.
 
 ---
 
-Step 3 — Download File on Windows
+## Step 3 — Download File on Windows
 
 On Windows victim machine:
 ```cmd
@@ -69,7 +69,7 @@ This simulates downloading malware.
 
 ---
 
-Step 4 — Execute Downloaded File
+## Step 4 — Execute Downloaded File
 ```cmd
 C:\Users\Public\payload.exe
 
