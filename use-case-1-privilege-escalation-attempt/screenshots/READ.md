@@ -1,24 +1,45 @@
-# Use Case 1 — Privilege Escalation via Remote Process Execution
+# 🔴 Use Case 1 — Privilege Escalation Attempt Detection
 
-## Attacker Machine
-Kali Linux
+![Platform](https://img.shields.io/badge/Platform-Windows-blue)
+![Platform](https://img.shields.io/badge/Platform-Linux-darkgreen)
+![Tool](https://img.shields.io/badge/SIEM-Splunk-green)
+![Use Case](https://img.shields.io/badge/Use%20Case-Privilege%20Escalation-red)
+![Status](https://img.shields.io/badge/Status-Completed-success)
 
-## Victim Machine
-Windows with Sysmon + Splunk
+---
 
-## Attack Flow
+# 🎯 Objective
 
-1. Discover Windows IP using Nmap
-2. Connect using SMB
-3. Execute remote command using wmiexec.py
-4. Launch cmd.exe
-5. Launch powershell.exe
-6. Create new admin user
+Detect privilege escalation attempts where an attacker creates new user accounts and assigns administrative privileges.
 
-## Expected Logs
+This use case focuses on identifying:
 
-4624 — Network Logon  
-4688 — Process Creation  
-4672 — Privileged Access  
-4720 — User Creation  
-4732 — Admin Group Assignment
+- Remote command execution  
+- PowerShell execution  
+- User account creation  
+- Addition of user to Administrators group  
+
+These behaviors indicate unauthorized privilege escalation activity.
+
+---
+
+# 🧱 Lab Setup
+
+| Component | Description |
+|----------|-------------|
+| 🖥️ Attacker Machine | Kali Linux |
+| 🪟 Victim Machine | Windows 10 |
+| 📊 SIEM | Splunk Free Edition |
+| 📡 Logging | Windows Security Logs + Sysmon |
+| 🛠️ Tools Used | wmiexec.py (Impacket), PowerShell |
+
+---
+
+# 🧪 Attack Simulation (Kali Side)
+
+## Step 1 — Remote Command Execution
+
+From Kali:
+
+```bash
+wmiexec.py username:password@192.168.1.10
