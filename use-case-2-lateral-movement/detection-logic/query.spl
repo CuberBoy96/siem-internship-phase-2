@@ -1,1 +1,16 @@
 
+index=* 
+(EventCode=4625 OR EventCode=4624 OR EventCode=4688)
+
+| eval Activity=case(
+EventCode==4625,"Failed Login",
+EventCode==4624 AND LogonType=3,"Remote Login Success",
+EventCode==4688 AND like(Creator_Process_Name,"%wmiprvse.exe%"),
+"WMI Remote Execution",
+EventCode==4688 AND like(New_Process_Name,"%powershell.exe%"),
+"Remote PowerShell Execution"
+)
+
+| stats values(Activity) as Activities
+by Source_Network_Address
+
