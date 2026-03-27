@@ -1,123 +1,132 @@
 
-🔴 Use Case 5 — Hidden User Account Creation Detection
+## 🔴 Use Case 5 — Hidden User Account Creation Detection
 
 This is a very strong SOC use case, because attackers often create backdoor admin accounts to maintain persistence.
 
 We'll build:
 
-✅ One Single Combined Splunk Query
-✅ Detect full hidden user creation chain
-✅ Ready for GitHub documentation
-✅ SOC-level correlation logic
+- ✅ One Single Combined Splunk Query
+- ✅ Detect full hidden user creation chain
+- ✅ Ready for GitHub documentation
+- ✅ SOC-level correlation logic
 
-🔴 Use Case 5 — Single Combined Splunk Query
+## 🔴 Use Case 5 — Single Combined Splunk Query
 Hidden User Account Creation Detection
 
 This one query detects:
 
-New user creation
-User added to Administrators group
-Privileged rights assignment
-Suspicious hidden-style usernames
-🔍 Master Detection Query — Use Case 5
-index=* 
+- New user creation
+- User added to Administrators group
+- Privileged rights assignment
+- Suspicious hidden-style usernames
 
-(EventCode=4720 OR 
- EventCode=4732 OR 
- EventCode=4672)
+---
 
-| eval Activity=case(
+## 🔍 Master Detection Query — Use Case 5
 
+```spl
+index=* (EventCode=4720 OR EventCode=4732 OR EventCode=4672)
+| eval Activity=case
+(
 EventCode==4720,
 "User Account Created",
-
 EventCode==4732,
 "User Added to Administrators Group",
-
 EventCode==4672,
 "Administrative Privileges Assigned"
-
 )
-
 | stats count
 values(Activity) as Detected_Activities
 values(TargetUserName) as Created_User
 values(SubjectUserName) as Performed_By
-
 by _time
-
 | sort -_time
-🎯 What This Query Detects (Full Use Case 5 Flow)
+
+```
+
+---
+
+## 🎯 What This Query Detects (Full Use Case 5 Flow)
 
 This covers your complete hidden user persistence scenario.
 
-Step	Attack Action	Event Detected
-1	New user created	Event 4720
-2	Added to admin group	Event 4732
-3	Admin privileges assigned	Event 4672
-🧪 Real Attack Scenario (Windows Victim)
+- 	New user created	Event 4720
+- Added to admin group	Event 4732
+- 	Admin privileges assigned	Event 4672
+  
+---
+
+## 🧪 Real Attack Scenario (Windows Victim)
 
 Run this on Windows victim machine:
-
+```cmd
 net user hiddenadmin Pass123@ /add
 
-Then:
+```
 
+Then:
+```cmd
 net localgroup administrators hiddenadmin /add
 
-Optional stealth-style account:
+```
 
+Optional stealth-style account:
+```cmd
 net user support$ Pass123@ /add
 net localgroup administrators support$ /add
 
+```
 Attackers often use:
-
+```cmd
 support$
 backup$
 svc_admin
 systemhelp
 
+```
 These look legitimate or hidden.
 
-📊 Expected Splunk Logs
+---
+
+## 📊 Expected Splunk Logs
 
 After attack:
 
-4720 → User Created
-4732 → Added to Administrators
-4672 → Privileged Token Assigned
-
-Your query will detect:
+- 4720 → User Created
+- 4732 → Added to Administrators
+- 4672 → Privileged Token Assigned
 
 Detected_Activities:
 
-User Account Created
-User Added to Administrators Group
-Administrative Privileges Assigned
-⭐ SOC-Level Correlation Version (Recommended)
+- User Account Created
+- User Added to Administrators Group
+- Administrative Privileges Assigned
+
+---
+
+## ⭐ SOC-Level Correlation Version (Recommended)
 
 This version detects multi-step persistence behavior.
-
-index=* 
-(EventCode=4720 OR EventCode=4732 OR EventCode=4672)
-
-| eval Activity=case(
+```spl
+index=* (EventCode=4720 OR EventCode=4732 OR EventCode=4672)
+| eval Activity=case
+(
 EventCode==4720,"User Created",
 EventCode==4732,"Added to Admin Group",
 EventCode==4672,"Admin Privileges Assigned"
 )
-
 | stats values(Activity) as Activities
 values(TargetUserName) as Created_User
 values(SubjectUserName) as Performed_By
-
 by TargetUserName
-
 | where mvcount(Activities) >= 2
 
+```
 This detects real privilege persistence chains.
 
-🚨 Best Alert Query for Use Case 5
+---
+
+## 🚨 Best Alert Query for Use Case 5
 
 Use this to create Splunk Alert.
 
