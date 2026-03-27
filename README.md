@@ -94,7 +94,7 @@ Detect unauthorized privilege escalation through user creation and administrator
 
 📂 Folder:
     
-    siem-detection-lab/
+    siem-iternship-phase-2/
     │
     ├── use-case-1-privilege-escalation-attempt/
 
@@ -113,7 +113,7 @@ Detect remote execution and authentication across systems.
 
 📂 Folder:
 
-    siem-detection-lab/
+    siem-iternship-phase-2/
     │
     ├── use-case-2-lateral-movement/
 
@@ -131,7 +131,7 @@ Detect malicious file downloads and execution activity.
 
 📂 Folder:
 
-    siem-detection-lab/
+    siem-iternship-phase-2/
     │
     ├── use-case-3-suspicious-file-download-execution/
 
@@ -148,7 +148,7 @@ Detect suspicious login behavior outside normal working hours.
 
 📂 Folder:
 
-    siem-detection-lab/
+    siem-iternship-phase-2/
     │
     ├── use-case-4-abnormal-user-behavior/
 
@@ -165,7 +165,7 @@ Detect repeated outbound connections to attacker-controlled systems.
 
 📂 Folder:
       
-    siem-detection-lab/
+    siem-iternship-phase-2/
     │
     ├── use-case-5-c2-beaconing-behavior/
 
@@ -185,7 +185,7 @@ Detect repeated outbound connections to attacker-controlled systems.
 
 # 📁 Repository Structure
 
-    siem-detection-lab/
+    siem-iternship-phase-2/
     │
     ├── use-case-1-privilege-escalation-attempt/
     │ ├── screenshots/
