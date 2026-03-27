@@ -225,9 +225,6 @@ SOC Analyst should:
     ├── detection-logic/
     │   └── privilege_escalation_detection.spl
     │
-    ├── writeups/
-    │   └── privilege-escalation-analysis.md
-    │
     └── README.md
 
 ---
