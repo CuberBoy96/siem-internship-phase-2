@@ -64,8 +64,7 @@ This creates a remote shell session on the Windows machine.
 
 ## Step 3 — Execute System Commands
 
-```Inside the remote session:
-
+```cmd
 hostname
 ipconfig
 whoami
@@ -90,15 +89,12 @@ This simulates PowerShell execution from a remote machine.
 
 Windows generates the following logs:
 
-Event ID	Description
-4625	Failed Login Attempt
-4624	Successful Login
-4688	Process Created
-
-Sysmon logs:
-
-Sysmon Event	Description
-Event 1	Process Execution
+|Source |Event ID	|Description |
+|-------|---------|------------|
+|Windows|4625	  |Failed Login Attempt  |
+|Windows|4624	  |Successful Login  |
+|Windows|4688	  |Process Created  |
+|Sysmon |1	    | Process Execution  |
 
 ---
 
