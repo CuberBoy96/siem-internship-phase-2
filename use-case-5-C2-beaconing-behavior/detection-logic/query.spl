@@ -1,1 +1,29 @@
 
+index=* 
+
+(EventCode=4720 OR 
+ EventCode=4732 OR 
+ EventCode=4672)
+
+| eval Activity=case(
+
+EventCode==4720,
+"User Account Created",
+
+EventCode==4732,
+"User Added to Administrators Group",
+
+EventCode==4672,
+"Administrative Privileges Assigned"
+
+)
+
+| stats count
+values(Activity) as Detected_Activities
+values(TargetUserName) as Created_User
+values(SubjectUserName) as Performed_By
+
+by _time
+
+| sort -_time
+
