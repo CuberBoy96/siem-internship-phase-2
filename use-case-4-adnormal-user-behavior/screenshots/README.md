@@ -173,7 +173,9 @@ SOC Analyst should:
 use-case-4-abnormal-user-behavior/
 │
 ├── detection-logic/
-│ └── abnormal_login_detection.spl
+|   ├── login-session/
+|   ├── writeups.md
+│   └── abnormal_login_detection.spl
 |
 ├── screenshots/
 │   ├── login-session.png
