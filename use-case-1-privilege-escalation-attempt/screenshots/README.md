@@ -209,6 +209,8 @@ SOC Analyst should:
     use-case-1-privilege-escalation-attempt/
     │
     ├── detection-logic/
+    |   ├── wmiexec-session/
+    |   ├── writeups.md
     │   └── privilege_escalation_detection.spl
     │
     ├── screenshots/
