@@ -192,7 +192,9 @@ SOC Analyst should:
 use-case-3-suspicious-file-download-execution/
 │
 ├── detection-logic/
-│  └── suspicious_download_detection.spl
+|   ├── payload-execution/
+|   ├── writeups.md
+│   └── suspicious_download_detection.spl
 |
 ├── screenshots/
 │   ├── kali-http-server.png
