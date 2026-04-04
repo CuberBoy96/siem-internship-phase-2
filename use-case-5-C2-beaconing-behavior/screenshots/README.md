@@ -206,11 +206,10 @@ use-case-5-c2-beaconing-behavior/
 │   └── alert-triggered.png
 │
 ├── detection-logic/
-│   └── c2_beacon_detection.spl
-│
-├── writeups/
-│   └── c2-beacon-analysis.md
-│
+|   ├── c2-beacon-detection/
+|   ├── writeups.md   
+│   └── c2-beacon-detection.spl
+|
 └── README.md
 
 ```
