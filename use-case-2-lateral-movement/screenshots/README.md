@@ -221,6 +221,8 @@ SOC Analyst should:
 use-case-2-lateral-movement/
 │
 ├── detection-logic/
+|   ├── smb-login-attempts/
+|   ├── writeups.md
 │   └── lateral_movement_detection.spl
 |
 ├── screenshots/
