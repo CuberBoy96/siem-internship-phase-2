@@ -188,14 +188,14 @@ Detect repeated outbound connections to attacker-controlled systems.
     siem-iternship-phase-2/
     │
     ├── use-case-1-privilege-escalation-attempt/
-    │ ├── screenshots/
-    │ ├── detection-logic/
+    | │ ├── detection-logic/
+    | │ ├── screenshots/
     │ ├── writeups/
     │ └── README.md
     │
     ├── use-case-2-lateral-movement/
-    │ ├── screenshots/
-    │ ├── detection-logic/
+    | │ ├── detection-logic/
+    | │ ├── screenshots/
     │ ├── writeups/
     │ └── README.md
     │
