@@ -174,14 +174,13 @@ use-case-4-abnormal-user-behavior/
 │
 ├── detection-logic/
 |   ├── login-session/
+|   ├── screenshots/
+|   │   ├── login-session.png
+|   │   ├── command-execution.png
+|   │   ├── splunk-query-result.png
+|   │   └── alert-triggered.png
 |   ├── writeups.md
 │   └── abnormal_login_detection.spl
-|
-├── screenshots/
-│   ├── login-session.png
-│   ├── command-execution.png
-│   ├── splunk-query-result.png
-│   └── alert-triggered.png
 │
 └── README.md
 
