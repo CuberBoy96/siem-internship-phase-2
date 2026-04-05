@@ -198,15 +198,14 @@ SOC Analyst should:
 ```
 use-case-5-c2-beaconing-behavior/
 │
-├── screenshots/
-│   ├── netcat-listener.png
-│   ├── beacon-script.png
-│   ├── repeated-connections.png
-│   ├── splunk-query-result.png
-│   └── alert-triggered.png
-│
 ├── detection-logic/
 |   ├── c2-beacon-detection/
+|   ├── screenshots/
+|   │   ├── netcat-listener.png
+|   │   ├── beacon-script.png
+|   │   ├── repeated-connections.png
+|   │   ├── splunk-query-result.png
+|   │   └── alert-triggered.png
 |   ├── writeups.md   
 │   └── c2-beacon-detection.spl
 |
