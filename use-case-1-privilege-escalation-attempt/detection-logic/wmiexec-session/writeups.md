@@ -142,20 +142,29 @@ Child Process Fields
 Windows does NOT log process creation by default.
 
 Run this on Windows:
-
+```cmd
 auditpol /set /subcategory:"Process Creation" /success:enable
-3️⃣ Incorrect Process Field Usage
+
+```
+
+---
+## 3️⃣ Incorrect Process Field Usage
 
 Sysmon mapping:
-
+```
 Image = New Process
 ParentImage = Parent Process
-🧩 Universal Detection Query (Recommended)
+
+```
+
+---
+## 🧩 Universal Detection Query (Recommended)
 
 Works for:
 
 Sysmon
 Windows Security Logs
+```
 index=* (EventCode=4688 OR EventCode=1)
 
 | eval Parent = coalesce(Creator_Process_Name, ParentImage, ParentProcessName)
@@ -167,119 +176,162 @@ index=* (EventCode=4688 OR EventCode=1)
 | search Parent="*wmiprvse.exe*"
 
 | table _time User Parent Child
-🧪 Working Detection Query (Lab Verified)
+
+```
+
+---
+## 🧪 Working Detection Query (Lab Verified)
+```
 index=* (EventCode=4688 OR EventCode=1)
 Creator_Process_Name="*wmiprvse.exe*"
 | table _time New_Process_Name Account_Name
-📊 Detection Results
+
+```
+
+---
+## 📊 Detection Results
 
 Splunk detected:
 
 3 Process Creation Events
 
-🧾 Observed Events
-⏰ Time	🧠 Process	👤 User
-12:33:42	C:\Windows\System32\cmd.exe	DESKTOP-K7ML152$\abhay
-12:33:42	C:\Windows\System32\cmd.exe	DESKTOP-K7ML152$\abhay
-12:33:42	C:\Windows\System32\cmd.exe	DESKTOP-K7ML152$\abhay
+## 🧾 Observed Events
+|⏰ Time	|🧠 Process	              |👤 User              |
+|---------|---------------------------|----------------------|
+|12:33:42	|C:\Windows\System32\cmd.exe	|DESKTOP-K7ML152$\abhay |
+|12:33:42	|C:\Windows\System32\cmd.exe	|DESKTOP-K7ML152$\abhay |
+|12:33:42	|C:\Windows\System32\cmd.exe	|DESKTOP-K7ML152$\abhay |
 
-✔️ Detection Successful
+---
+## ✔️ Detection Successful
 
 🔬 Detection Logic Breakdown
 Suspicious Parent Process
+```
 wmiprvse.exe
 
+```
 This is:
 
 🧠 WMI Provider Host
 
 Used by:
 
-Remote WMI execution
-Lateral movement
-Malware operations
-Suspicious Child Processes
+- Remote WMI execution
+- Lateral movement
+- Malware operations
+- Suspicious Child Processes
 
 Watch for:
-
+```
 cmd.exe
 powershell.exe
 wscript.exe
 
+```
 These indicate:
 
 ⚠️ Command execution activity.
 
-🗺️ MITRE ATT&CK Mapping
-Technique	ID
-Windows Management Instrumentation	🎯 T1047
-Remote Services	🎯 T1021
-Command Execution	🎯 T1059
-🚩 Indicators of Compromise (IOCs)
+---
+## 🗺️ MITRE ATT&CK Mapping
+|Technique	                        |ID     |
+|-----------------------------------|-------|
+|Windows Management Instrumentation	|🎯 T1047 |
+|Remote Services	|🎯 T1021 |
+|Command Execution	|🎯 T1059 |
+
+---
+## 🚩 Indicators of Compromise (IOCs)
 
 Look for:
-
+```
 Parent Process
 wmiprvse.exe
 Child Processes
 cmd.exe
 powershell.exe
 wscript.exe
-Suspicious Behaviors
-🔁 Rapid process launches
-🌐 Remote execution
-🧑‍💻 Privileged account usage
-🕒 Odd execution times
-🔧 Detection Improvements
 
+```
+---
+## Suspicious Behaviors
+- 🔁 Rapid process launches
+- 🌐 Remote execution
+- 🧑‍💻 Privileged account usage
+- 🕒 Odd execution times
+
+---
+## 🔧 Detection Improvements
 Enhance detection accuracy:
 
-Monitor More Child Processes
+---
+## Monitor More Child Processes
+```
 | search Child IN ("cmd.exe","powershell.exe","wscript.exe")
-Detect Remote PowerShell
+```
+---
+## Detect Remote PowerShell
+```
 | search Child="*powershell.exe*"
-Add Host Tracking
+```
+---
+## Add Host Tracking
+```
 | table _time host User Parent Child
-🕵️ Threat Hunting Tips
+```
+---
+## 🕵️ Threat Hunting Tips
 
 Look for:
 
-wmiprvse spawning shells
-Execution at unusual times
-Multiple affected hosts
-Repeated command execution
-🛡️ Defensive Recommendations
+- wmiprvse spawning shells
+- Execution at unusual times
+- Multiple affected hosts
+- Repeated command execution
+
+---
+## 🛡️ Defensive Recommendations
 
 Improve detection posture:
 
-✅ Enable Sysmon logging
-✅ Enable Process Creation auditing
-✅ Restrict WMI remote access
-✅ Monitor privileged accounts
-✅ Deploy EDR rules
-🖼️ Screenshots Included
+- ✅ Enable Sysmon logging
+- ✅ Enable Process Creation auditing
+- ✅ Restrict WMI remote access
+- ✅ Monitor privileged accounts
+- ✅ Deploy EDR rules
+
+---
+## 🖼️ Screenshots Included
 
 📸 This project contains:
 
-wmiexec execution proof
-Splunk detection logs
-Universal detection query
-Troubleshooting workflow
-🧾 Detection Summary
+- wmiexec execution proof
+- Splunk detection logs
+- Universal detection query
+- Troubleshooting workflow
+
+---
+  
+## 🧾 Detection Summary
 Field	Value
-🎯 Detection Type	Remote Execution
-🧠 Parent Process	wmiprvse.exe
-⚙️ Tool Simulated	wmiexec
-📊 SIEM	Splunk
-🛡️ Status	Successful Detection
-🎉 Conclusion
+- 🎯 Detection Type	Remote Execution
+- 🧠 Parent Process	wmiprvse.exe
+- ⚙️ Tool Simulated	wmiexec
+- 📊 SIEM	Splunk
+- 🛡️ Status	Successful Detection
+
+---
+## 🎉 Conclusion
 
 This lab demonstrates how attackers can execute commands remotely using WMI, and how defenders can successfully detect this activity using Splunk process logs.
 
-🔑 Key Takeaway
+---
+## 🔑 Key Takeaway
 
 Monitoring wmiprvse.exe spawning shell processes is a powerful method to detect WMI-based remote execution attacks.
 
+---
 👨‍💻 Author
 
 Abhay
@@ -287,3 +339,5 @@ Abhay
 🔐 Detection Engineering
 🧠 Threat Hunting
 📊 SIEM Engineering
+
+---
