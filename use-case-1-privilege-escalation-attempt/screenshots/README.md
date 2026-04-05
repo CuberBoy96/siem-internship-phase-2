@@ -209,16 +209,16 @@ SOC Analyst should:
     use-case-1-privilege-escalation-attempt/
     │
     ├── detection-logic/
-    |   ├── wmiexec-session/
+    |   ├── wmiexec-session/     
+    |   |   ├── screenshots/
+    |   │   ├── wmiexec-session.png
+    |   │   ├── powershell-execution.png
+    |   │   ├── account-created.png
+    |   │   ├── splunk-query-result.png
+    |   │   └── alert-triggered.png
+    |   |
     |   ├── writeups.md
     │   └── privilege_escalation_detection.spl
-    │
-    ├── screenshots/
-    │   ├── wmiexec-session.png
-    │   ├── powershell-execution.png
-    │   ├── account-created.png
-    │   ├── splunk-query-result.png
-    │   └── alert-triggered.png
     │
     └── README.md
 
