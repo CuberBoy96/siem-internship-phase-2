@@ -49,8 +49,10 @@ Detection Alert 🚨
 Attackers create new accounts to maintain persistence.
 
 We simulated this using:
+```
 Impacket-PSExec
 
+```
 ---
 
 # 💻 Attack Method 1 — Standard Command Line
@@ -66,46 +68,63 @@ impacket-psexec abhay:CB@i510400f@10.193.10.80 "net user Newuser1 Password123 /a
 ## ✅ Result
 
 ✔️ Successfully created a new local user:
-
+```
 Newuser1
 
-💻 Attack Method 2 — PowerShell User Creation
+```
+
+---
+## 💻 Attack Method 2 — PowerShell User Creation
 
 Alternative PowerShell method:
-
+```bash
 impacket-psexec abhay:CB@i510400f@10.193.10.80 "powershell.exe -Command New-LocalUser -Name 'Ghostadmin' -NoPassword"
-⚠️ Important Note
+
+```
+
+---
+## ⚠️ Important Note
 
 Even if the PowerShell command fails:
 
-✔️ Logs are still generated
-✔️ Detection remains possible
+- ✔️ Logs are still generated
+- ✔️ Detection remains possible
 
-📂 Phase 2: The Data Normalization Challenge
+---
+## 📂 Phase 2: The Data Normalization Challenge
 
 Different log sources use different field names.
 
 To create reliable detection rules, we normalize field names.
 
-🧩 Field Normalization Mapping
-✨ Information	📂 Windows 4688	📊 Sysmon Event 1	💎 Universal Alias
-Process Name	New_Process_Name	Image	ProcName
-Parent Process	Creator_Process_Name	ParentImage	Parent
-User Account	Account_Name	user / TargetUserName	User
-🏆 Phase 3: Detection Strategy (Splunk)
+🧩 Field Normalization Mapping 
+|✨ Information	|📂 Windows 4688	|📊 Sysmon Event 1	|💎 Universal Alias |
+|---------------|-----------------|-------------------|---------------------|
+|Process Name	|New_Process_Name	|Image	|ProcName |
+|Parent Process	|Creator_Process_Name	|ParentImage	|Parent  |
+|User Account	|Account_Name	|user / TargetUserName	|User  |
+
+---
+## 🏆 Phase 3: Detection Strategy (Splunk)
 
 We created two detection layers:
 
-1️⃣ Process-Level Detection
-2️⃣ Account Creation Event Detection
+- 1️⃣ Process-Level Detection
+- 2️⃣ Account Creation Event Detection
 
-🔍 Detection Layer 1: Process-Level Detection
+---
+## 🔍 Detection Layer 1: Process-Level Detection
 
 Detect execution of:
-
+```
 net.exe user
 powershell.exe
-🧪 Universal Hunter Query
+
+```
+
+---
+## 🧪 Universal Hunter Query
+```spl
 index=* (EventCode=4688 OR EventCode=1)
 
 | eval Parent = coalesce(Creator_Process_Name, ParentImage, ParentProcessName)
@@ -120,105 +139,132 @@ index=* (EventCode=4688 OR EventCode=1)
 
 | sort - _time
 
-🔐 Detection Layer 2: Account Management Detection
+```
+
+---
+## 🔐 Detection Layer 2: Account Management Detection
 
 Windows generates:
-
+```
 Event ID 4720
-
+```
 Whenever:
 
 ✔️ A new user account is created.
 
-🧪 High-Fidelity Detection Query
+---
+## 🧪 High-Fidelity Detection Query
+```spl
 index=* EventCode=4720
-📊 Detection Result
+
+```
+
+---
+## 📊 Detection Result
 
 Splunk detected:
-
+```
 Newuser1
-
+```
 Created at:
-
+```
 13:17:39
+```
 
-🛠️ Phase 4: Troubleshooting Empty Results
+---
+## 🛠️ Phase 4: Troubleshooting Empty Results
 
 If detection fails, check these:
 
-1️⃣ Enable Audit Policy
+## 1️⃣ Enable Audit Policy
 
 User Account Management logging is often disabled.
 
 Run this command:
-
+```cmd
 auditpol /set /subcategory:"User Account Management" /success:enable
 
-2️⃣ Local Verification
+```
+
+---
+## 2️⃣ Local Verification
 
 Check logs locally:
-
+```cmd
 eventvwr.msc
 
+```
 Verify:
-
+```
 Event ID 4720
-
+```
 Exists before blaming Splunk.
 
-3️⃣ Permission Issues
+---
+## 3️⃣ Permission Issues
 
 If command fails:
-
+```
 Access Denied
-
+```
 Then:
 
-❌ No logs generated
-✔️ Use Administrator privileges
+- ❌ No logs generated
+- ✔️ Use Administrator privileges
 
-🗺️ MITRE ATT&CK Mapping
-Technique	ID	Description
-Create Account	T1136	Create new local user
-Valid Accounts	T1078	Maintain access using credentials
-Persistence	TA0003	Maintain long-term access
-🚩 Indicators of Compromise (IOCs)
+---
+## 🗺️ MITRE ATT&CK Mapping
+|Technique	|ID	 |Description  |
+|-----------|----|-------------|
+|Create Account	|T1136	|Create new local user |
+|Valid Accounts	|T1078	|Maintain access using credentials |
+|Persistence	|TA0003	\Maintain long-term access |
+
+---
+## 🚩 Indicators of Compromise (IOCs)
 
 Look for:
 
-⚠️ net.exe user /add
-⚠️ powershell.exe New-LocalUser
-⚠️ Event ID 4720
-⚠️ Unknown user accounts
-🛡️ Defensive Recommendations
+- ⚠️ net.exe user /add
+- ⚠️ powershell.exe New-LocalUser
+- ⚠️ Event ID 4720
+- ⚠️ Unknown user accounts
+
+---
+## 🛡️ Defensive Recommendations
 
 Improve security posture:
 
-✔️ Enable Account Management Auditing
-✔️ Monitor Event ID 4720
-✔️ Alert on new local users
-✔️ Restrict PSExec usage
-✔️ Review privileged actions
+- ✔️ Enable Account Management Auditing
+- ✔️ Monitor Event ID 4720
+- ✔️ Alert on new local users
+- ✔️ Restrict PSExec usage
+- ✔️ Review privileged actions
 
-🧠 Key Takeaway
+---
+## 🧠 Key Takeaway
 
 Monitoring Event ID 4720 together with suspicious net.exe user activity provides a strong detection mechanism against unauthorized persistence.
 
-🏁 Lab Conclusion
+---
+## 🏁 Lab Conclusion
 
 By combining:
 
-✔️ Process Monitoring
-✔️ Account Management Events
+- ✔️ Process Monitoring
+- ✔️ Account Management Events
 
 We created a robust detection workflow capable of identifying unauthorized user persistence attempts.
 
 This approach significantly improves visibility into attacker behavior.
 
-✍️ Author
+---
+## ✍️ Author
 
 Abhay
 
 🔐 Detection Engineering
 🧠 Threat Hunting
 📊 SIEM Engineering
+
+---
