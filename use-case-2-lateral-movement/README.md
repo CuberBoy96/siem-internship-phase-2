@@ -222,15 +222,15 @@ use-case-2-lateral-movement/
 │
 ├── detection-logic/
 |   ├── smb-login-attempts/
+|   |   ├── screenshots/
+|   │   ├── smb-login-attempt.png
+|   │   ├── wmiexec-session.png
+|   │   ├── powershell-remote.png
+|   │   ├── splunk-query-result.png
+|   │   └── alert-triggered.png
+|   |  
 |   ├── writeups.md
 │   └── lateral_movement_detection.spl
-|
-├── screenshots/
-│   ├── smb-login-attempt.png
-│   ├── wmiexec-session.png
-│   ├── powershell-remote.png
-│   ├── splunk-query-result.png
-│   └── alert-triggered.png
 │
 └── README.md
 
