@@ -193,15 +193,14 @@ use-case-3-suspicious-file-download-execution/
 │
 ├── detection-logic/
 |   ├── payload-execution/
+|   ├── screenshots/
+|   │   ├── kali-http-server.png
+|   │   ├── windows-download.png
+|   │   ├── payload-execution.png
+|   │   ├── splunk-query-result.png
+|   │   └── alert-triggered.png
 |   ├── writeups.md
 │   └── suspicious_download_detection.spl
-|
-├── screenshots/
-│   ├── kali-http-server.png
-│   ├── windows-download.png
-│   ├── payload-execution.png
-│   ├── splunk-query-result.png
-│   └── alert-triggered.png
 │
 └── README.md
 
