@@ -14,10 +14,10 @@
 
 Attackers favor PowerShell because it is:
 
-✔️ Built into Windows  
-✔️ Powerful  
-✔️ Trusted  
-✔️ Difficult to detect without proper logging  
+- ✔️ Built into Windows  
+- ✔️ Powerful  
+- ✔️ Trusted  
+- ✔️ Difficult to detect without proper logging  
 
 This lab demonstrates how to detect **PowerShell commands executed remotely via WMI**, a classic **Living-off-the-Land (LOLBins)** technique.
 
